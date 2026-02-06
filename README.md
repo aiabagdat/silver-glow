@@ -1,4 +1,4 @@
-Скопируй вот ЭТУ версию (я её адаптировала под GitHub 👇)
+
 # Silver Glow — Production Web Application
 
 ## Project Overview
