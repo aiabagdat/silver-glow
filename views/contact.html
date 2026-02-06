@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Contact – Silver Glow</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header>
+  <h1>Contact Us</h1>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/products">Products</a>
+    <a href="/about">About</a>
+    <a href="/contact">Contact</a>
+  </nav>
+</header>
+
+<main>
+  <section>
+    <form action="/contact" method="POST" onsubmit="return validateForm()">
+
+      <input
+        type="text"
+        name="name"
+        id="name"
+        placeholder="Your Name"
+      >
+
+      <input
+        type="email"
+        name="email"
+        id="email"
+        placeholder="Your Email"
+      >
+
+      <textarea
+        name="message"
+        id="message"
+        placeholder="Your Message"
+      ></textarea>
+
+      <button type="submit">Send Message</button>
+
+    </form>
+  </section>
+</main>
+
+<script>
+  function validateForm() {
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const message = document.getElementById('message').value.trim();
+
+    if (!name || !email || !message) {
+      alert('Please fill in all fields before submitting.');
+      return false;
+    }
+
+    return true;
+  }
+</script>
+
+</body>
+</html>
