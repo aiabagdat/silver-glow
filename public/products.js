@@ -4,52 +4,77 @@ document.addEventListener('DOMContentLoaded', () => {
   loadProducts();
 });
 
-// ✅ IMPORTANT: make functions доступными для onclick
+// делаем функции доступными для onclick из HTML
 window.addProduct = addProduct;
 window.deleteProduct = deleteProduct;
 window.editProduct = editProduct;
 
 async function loadProducts() {
-  const res = await fetch('/api/products');
-  const products = await res.json();
+  try {
+    const res = await fetch('/api/products');
 
-  const list = document.getElementById('product-list');
-  list.innerHTML = '';
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`GET /api/products failed: ${res.status} ${text}`);
+    }
 
-  products.forEach(product => {
-    const li = document.createElement('li');
-    li.className = 'product-card';
+    const products = await res.json();
 
-    li.innerHTML = `
-      <h3>${product.name}</h3>
-      <div class="price">$${product.price}</div>
-      <p>${product.description}</p>
+    const list = document.getElementById('product-list');
+    if (!list) throw new Error('Element #product-list not found in products.html');
 
-      <button type="button" onclick="editProduct('${product._id}')">Edit</button>
-      <button type="button" class="delete-btn" onclick="deleteProduct('${product._id}')">
-        Delete
-      </button>
-    `;
+    list.innerHTML = '';
 
-    list.appendChild(li);
-  });
+    products.forEach(product => {
+      const li = document.createElement('li');
+      li.className = 'product-card';
+
+      li.innerHTML = `
+        <h3>${product.name}</h3>
+        <div class="price">$${product.price}</div>
+        <p>${product.description}</p>
+
+        <button type="button" onclick="editProduct('${product._id}')">Edit</button>
+        <button type="button" class="delete-btn" onclick="deleteProduct('${product._id}')">
+          Delete
+        </button>
+      `;
+
+      list.appendChild(li);
+    });
+  } catch (err) {
+    console.error(err);
+    alert('Failed to load products. Open Console for details.');
+  }
 }
 
 async function addProduct() {
   const name = document.getElementById('name').value.trim();
-  const price = document.getElementById('price').value.trim();
+  const priceRaw = document.getElementById('price').value.trim();
   const description = document.getElementById('description').value.trim();
 
-  if (!name || !price || !description) {
+  if (!name || !priceRaw || !description) {
     alert('All fields are required');
     return;
   }
 
-  await fetch('/api/products', {
+  const price = Number(priceRaw);
+  if (Number.isNaN(price)) {
+    alert('Price must be a number');
+    return;
+  }
+
+  const res = await fetch('/api/products', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name, price, description })
   });
+
+  if (!res.ok) {
+    const text = await res.text();
+    alert(`Create failed: ${res.status} ${text}`);
+    return;
+  }
 
   document.getElementById('name').value = '';
   document.getElementById('price').value = '';
@@ -59,16 +84,39 @@ async function addProduct() {
 }
 
 async function deleteProduct(id) {
-  await fetch(`/api/products/${id}`, { method: 'DELETE' });
+  const res = await fetch(`/api/products/${id}`, { method: 'DELETE' });
+  if (!res.ok) {
+    const text = await res.text();
+    alert(`Delete failed: ${res.status} ${text}`);
+    return;
+  }
   loadProducts();
 }
 
 async function editProduct(id) {
   const newName = prompt('Enter new product name:');
-  const newPrice = prompt('Enter new price:');
+  const newPriceRaw = prompt('Enter new price:');
   const newDescription = prompt('Enter new description:');
 
-  if (!newName || !newPrice || !newDescription) return;
+  if (!newName || !newPriceRaw || !newDescription) return;
 
-  await fetch(`/api/products/${id}`, {
-    met
+  const newPrice = Number(newPriceRaw);
+  if (Number.isNaN(newPrice)) {
+    alert('Price must be a number');
+    return;
+  }
+
+  const res = await fetch(`/api/products/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: newName, price: newPrice, description: newDescription })
+  });
+
+  if (!res.ok) {
+    const text = await res.text();
+    alert(`Update failed: ${res.status} ${text}`);
+    return;
+  }
+
+  loadProducts();
+}
