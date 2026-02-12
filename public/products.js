@@ -4,6 +4,11 @@ document.addEventListener('DOMContentLoaded', () => {
   loadProducts();
 });
 
+// ✅ IMPORTANT: make functions доступными для onclick
+window.addProduct = addProduct;
+window.deleteProduct = deleteProduct;
+window.editProduct = editProduct;
+
 async function loadProducts() {
   const res = await fetch('/api/products');
   const products = await res.json();
@@ -21,8 +26,9 @@ async function loadProducts() {
       <p>${product.description}</p>
 
       <button type="button" onclick="editProduct('${product._id}')">Edit</button>
-      <button type="button" class="delete-btn"
-        onclick="deleteProduct('${product._id}')">Delete</button>
+      <button type="button" class="delete-btn" onclick="deleteProduct('${product._id}')">
+        Delete
+      </button>
     `;
 
     list.appendChild(li);
@@ -65,10 +71,4 @@ async function editProduct(id) {
   if (!newName || !newPrice || !newDescription) return;
 
   await fetch(`/api/products/${id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name: newName, price: newPrice, description: newDescription })
-  });
-
-  loadProducts();
-}
+    met

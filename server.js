@@ -86,8 +86,7 @@ app.get('/api/products', async (req, res) => {
     }
 
     if (req.query.sortBy) {
-      sort[req.query.sortBy] =
-        req.query.order === 'desc' ? -1 : 1;
+      sort[req.query.sortBy] = req.query.order === 'desc' ? -1 : 1;
     }
 
     if (req.query.fields) {
@@ -96,15 +95,21 @@ app.get('/api/products', async (req, res) => {
       });
     }
 
-    const products = await db
-      .collection('products')
-      .find(filter)
-      .project(projection)
-      .sort(sort)
-      .toArray();
+    let cursor = db.collection('products').find(filter);
 
+    if (Object.keys(projection).length > 0) {
+      cursor = cursor.project(projection);
+    }
+
+    if (Object.keys(sort).length > 0) {
+      cursor = cursor.sort(sort);
+    }
+
+    const products = await cursor.toArray();
     res.status(200).json(products);
+
   } catch (err) {
+    console.error("ERROR in GET /api/products:", err);
     res.status(500).json({ error: 'Server error' });
   }
 });
@@ -128,7 +133,9 @@ app.get('/api/products/:id', async (req, res) => {
     }
 
     res.status(200).json(product);
-  } catch {
+
+  } catch (err) {
+    console.error("ERROR in GET /api/products/:id:", err);
     res.status(500).json({ error: 'Server error' });
   }
 });
@@ -154,7 +161,9 @@ app.post('/api/products', async (req, res) => {
       message: 'Product created',
       id: result.insertedId
     });
-  } catch {
+
+  } catch (err) {
+    console.error("ERROR in POST /api/products:", err);
     res.status(500).json({ error: 'Server error' });
   }
 });
@@ -184,7 +193,9 @@ app.put('/api/products/:id', async (req, res) => {
     }
 
     res.status(200).json({ message: 'Product updated' });
-  } catch {
+
+  } catch (err) {
+    console.error("ERROR in PUT /api/products/:id:", err);
     res.status(500).json({ error: 'Server error' });
   }
 });
@@ -208,7 +219,9 @@ app.delete('/api/products/:id', async (req, res) => {
     }
 
     res.status(200).json({ message: 'Product deleted' });
-  } catch {
+
+  } catch (err) {
+    console.error("ERROR in DELETE /api/products/:id:", err);
     res.status(500).json({ error: 'Server error' });
   }
 });
@@ -237,17 +250,13 @@ app.post('/contact', (req, res) => {
 
     messages.push(newMessage);
 
-    fs.writeFile(
-      'messages.json',
-      JSON.stringify(messages, null, 2),
-      () => {
-        res.send(`
-          <h1>Thank you, ${name}!</h1>
-          <p>Your message has been saved successfully.</p>
-          <a href="/">Back to Home</a>
-        `);
-      }
-    );
+    fs.writeFile('messages.json', JSON.stringify(messages, null, 2), () => {
+      res.send(`
+        <h1>Thank you, ${name}!</h1>
+        <p>Your message has been saved successfully.</p>
+        <a href="/">Back to Home</a>
+      `);
+    });
   });
 });
 
@@ -264,8 +273,6 @@ app.use((req, res) => {
 /* ---------- SERVER ---------- */
 const PORT = process.env.PORT || 3000;
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log(`Server running on port ${process.env.PORT || 3000}`);
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
-
-
