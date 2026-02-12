@@ -1,122 +1,111 @@
+Silver Glow — Full-Stack CRUD Application
+ Live Deployment
 
-# Silver Glow — Production Web Application
+Render URL:
+https://silver-glow-1.onrender.com
 
-## Project Overview
-Silver Glow is an individual academic full-stack web application representing a luxury silver jewelry platform.
+ Project Description
 
-The project demonstrates backend development using Node.js, Express, and MongoDB, combined with a production-ready web interface and cloud deployment.
+Silver Glow is a full-stack web application developed using Node.js, Express, and MongoDB Atlas.
 
----
+The project demonstrates:
 
-## Live Demo
-**Production URL:**  
-https://silver-glow.onrender.com
+REST API implementation
 
----
+Full CRUD operations
 
-## Technologies Used
-- Node.js
-- Express.js
-- MongoDB Atlas
-- HTML, CSS, JavaScript
-- Render (Deployment)
-- GitHub
+MongoDB cloud database integration
 
----
+Frontend interaction using Fetch API
 
-## Project Structure
-silver-glow-part2/
-├── database/
-│ └── mongo.js
-├── public/
-│ ├── products.js
-│ └── style.css
-├── views/
-│ ├── index.html
-│ ├── products.html
-│ ├── about.html
-│ ├── contact.html
-│ └── 404.html
-├── server.js
-├── package.json
-├── .gitignore
-├── README.md
+Deployment on Render
 
----
+ Technologies
 
-## Database
-- MongoDB Atlas
-- Database name: silverGlowDB
-- Collection: products
+Node.js
 
-Each product contains:
-- name (String)
-- price (Number)
-- description (String)
-- createdAt (Date)
+Express.js
 
----
+MongoDB Atlas
 
-## API Endpoints (CRUD)
+HTML / CSS
 
-Create product:
-POST /api/products
+JavaScript (Fetch API)
 
-Read all products:
-GET /api/products
+Render (Deployment)
 
-Read by ID:
-GET /api/products/:id
+ Database
 
-Update product:
-PUT /api/products/:id
+Database: silverGlowDB
+Collection: products
 
-Delete product:
-DELETE /api/products/:id
+Product fields:
 
----
+name (String)
 
-## Web Interface
-The application provides a production web interface that allows:
-- Viewing products
-- Adding new products
-- Editing existing products
-- Deleting products
+price (Number)
 
-All operations are performed via the web UI without using Postman.
+description (String)
 
----
+createdAt (Date)
 
-## Environment Variables
+CRUD API Endpoints
+Operation	Method	Route
+Create	POST	/api/products
+Read All	GET	/api/products
+Read by ID	GET	/api/products/:id
+Update	PUT	/api/products/:id
+Delete	DELETE	/api/products/:id
+ How to Verify the Application
+ Web Interface (Render)
 
-Local `.env` file:
-PORT=3000
-MONGO_URI=your_mongodb_connection_string
+Open:
 
-Production variables are configured in Render.
+Home Page:
+https://silver-glow-1.onrender.com/
 
----
+Product Management:
+https://silver-glow-1.onrender.com/products
 
-## How to Run Locally
-npm install
-node server.js
+Test CRUD:
+
+Add a product using the form
+
+Refresh page (data persists)
+
+Edit product
+
+Delete product
+
+All operations are performed through the web interface.
+
+ API Verification
 
 Open in browser:
+
+All products:
+https://silver-glow-1.onrender.com/api/products
+
+Project info:
+https://silver-glow-1.onrender.com/api/info
+
+The API returns JSON responses.
+
+💻 Run Locally
+npm install
+npm start
+
+
+Create .env file:
+
+PORT=3000
+MONGO_URI=your_mongodb_atlas_connection_string
+
+
+Open:
 http://localhost:3000
 
----
 
-## Deployment
-The application is deployed using Render and connected to MongoDB Atlas.
 
----
-
-## Author
-Aisulu Azimkhan  
+Aisulu Azimkhan
 Individual Academic Project
-
----
-
-## Course
-Web Technologies 2 (Backend)  
-Assignment 3 – Part 2
