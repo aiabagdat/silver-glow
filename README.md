@@ -1,111 +1,118 @@
-Silver Glow — Full-Stack CRUD Application
- Live Deployment
 
-Render URL:
-https://silver-glow-1.onrender.com
 
- Project Description
+# Silver Glow — Full-Stack CRUD Web Application
 
-Silver Glow is a full-stack web application developed using Node.js, Express, and MongoDB Atlas.
+**Deployed (Render):** https://silver-glow-1.onrender.com  
+**Repository:** https://github.com/aiabagdat/silver-glow
 
-The project demonstrates:
+---
 
-REST API implementation
+## 1. Project Summary
 
-Full CRUD operations
+Silver Glow is an individual academic full-stack web application that demonstrates:
+- RESTful backend development with **Node.js + Express**
+- Cloud database integration with **MongoDB Atlas**
+- Full **CRUD** operations (Create, Read, Update, Delete)
+- Frontend interaction using **Fetch API**
+- Production deployment on **Render** with environment variables
 
-MongoDB cloud database integration
+---
 
-Frontend interaction using Fetch API
+## 2. Technology Stack
 
-Deployment on Render
+- Node.js
+- Express.js
+- MongoDB Atlas (MongoDB Native Driver)
+- HTML / CSS
+- JavaScript (Fetch API)
+- Git & GitHub
+- Render (Deployment)
 
- Technologies
+---
 
-Node.js
+## 3. Data Model
 
-Express.js
+**Database:** `silverGlowDB`  
+**Collection:** `products`
 
-MongoDB Atlas
+**Product fields:**
+- `name` (String)
+- `price` (Number)
+- `description` (String)
+- `createdAt` (Date)
 
-HTML / CSS
+---
 
-JavaScript (Fetch API)
+## 4. Routes
 
-Render (Deployment)
+### Web Pages
+- `/` — Home
+- `/products` — Product Management (CRUD UI)
+- `/about` — About
+- `/contact` — Contact
 
- Database
+### API (CRUD)
+- `GET /api/products` — Read all products
+- `GET /api/products/:id` — Read by ID
+- `POST /api/products` — Create product
+- `PUT /api/products/:id` — Update product
+- `DELETE /api/products/:id` — Delete product
 
-Database: silverGlowDB
-Collection: products
+Additional endpoint:
+- `GET /api/info` — Project info (JSON)
 
-Product fields:
+---
 
-name (String)
+## 5. How to Verify (Deployed)
 
-price (Number)
+Open the following pages:
 
-description (String)
+- Home: https://silver-glow-1.onrender.com/
+- CRUD UI: https://silver-glow-1.onrender.com/products
+- API Products (JSON): https://silver-glow-1.onrender.com/api/products
+- API Info (JSON): https://silver-glow-1.onrender.com/api/info
 
-createdAt (Date)
+### CRUD demonstration (via `/products`)
+1) **Create:** fill the form → click **Add Product** → item appears  
+2) **Read:** refresh the page → items remain stored (MongoDB)  
+3) **Update:** click **Edit** → change values → item updates  
+4) **Delete:** click **Delete** → item is removed  
 
-CRUD API Endpoints
-Operation	Method	Route
-Create	POST	/api/products
-Read All	GET	/api/products
-Read by ID	GET	/api/products/:id
-Update	PUT	/api/products/:id
-Delete	DELETE	/api/products/:id
- How to Verify the Application
- Web Interface (Render)
+All operations are performed through the web interface (no Postman required).
 
-Open:
+---
 
-Home Page:
-https://silver-glow-1.onrender.com/
+## 6. Local Setup
 
-Product Management:
-https://silver-glow-1.onrender.com/products
-
-Test CRUD:
-
-Add a product using the form
-
-Refresh page (data persists)
-
-Edit product
-
-Delete product
-
-All operations are performed through the web interface.
-
- API Verification
-
-Open in browser:
-
-All products:
-https://silver-glow-1.onrender.com/api/products
-
-Project info:
-https://silver-glow-1.onrender.com/api/info
-
-The API returns JSON responses.
-
-💻 Run Locally
+### 6.1 Install dependencies
+```bash
 npm install
+
+6.2 Create .env (project root)
+PORT=3000
+MONGO_URI=mongodb+srv://<username>:<password>@<cluster>/<db>?retryWrites=true&w=majority
+
+6.3 Run the project
 npm start
 
 
-Create .env file:
-
-PORT=3000
-MONGO_URI=your_mongodb_atlas_connection_string
-
-
 Open:
-http://localhost:3000
 
+http://localhost:3000/
 
+http://localhost:3000/products
+
+7. Deployment Notes
+
+Deployment platform: Render
+
+Configuration via environment variables (Render → Environment):
+
+MONGO_URI (required)
+
+The server listens on process.env.PORT
+
+8. Author
 
 Aisulu Azimkhan
-Individual Academic Project
+Individual Academic Project — Web Technologies
