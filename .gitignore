@@ -1,5 +1,2 @@
-.env
 node_modules/
-messages.json
-database.db
-.DS_Store
+.env

@@ -1,5 +1,7 @@
 require('dotenv').config();
 
+const session = require('express-session');
+
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
@@ -13,6 +15,24 @@ const app = express();
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// Render uses a proxy, needed for secure cookies
+app.set('trust proxy', 1);
+
+// SESSION (cookies)
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'dev_secret_change_me',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,                          // required
+    secure: process.env.NODE_ENV === 'production', // required in production
+    sameSite: 'lax',
+    maxAge: 1000 * 60 * 60 * 2 // 2 hours
+  }
+}));
+
+
 
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
@@ -253,26 +273,4 @@ app.post('/contact', (req, res) => {
     fs.writeFile('messages.json', JSON.stringify(messages, null, 2), () => {
       res.send(`
         <h1>Thank you, ${name}!</h1>
-        <p>Your message has been saved successfully.</p>
-        <a href="/">Back to Home</a>
-      `);
-    });
-  });
-});
-
-/* ---------- API 404 ---------- */
-app.use('/api', (req, res) => {
-  res.status(404).json({ error: 'API route not found' });
-});
-
-/* ---------- HTML 404 ---------- */
-app.use((req, res) => {
-  res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
-});
-
-/* ---------- SERVER ---------- */
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+        <p>Your message has been saved successfully.
